@@ -15,42 +15,36 @@
 const solution = (input) => {
   const m = input.length
   const n = input[0].length
+  let islands = 0
 
-  const islands = {}
-  let islandsIndex = 0
+  const walk = (x, y) => {
+    // check if x, y within field
 
-  const walk = (i, j) => {
-    // outside of map
-    if (i === m || j === n) return
+    if (!(x < m && x >= 0 && y < n && y >= 0)) return
 
-    const cellId = i + '' + j
+    if (input[x][y] === 1) {
+    // replace 1 with 0
+    input[x][y] = 0
 
-    // we already checked it
-    if (islands[cellId]) return
-
-    if (input[i][j] === 1) {
-      if ((i > 0 && input[i - 1][j] > 0) || (j > 0 && input[i][j - 1] > 0)) {
-        if (i > 0) {
-          islands[cellId] = input[i - 1][j]
-        } else if (j > 0) {
-          islands[cellId] = input[i][j - 1]
-        }
-      } else {
-        islands[cellId] = islandsIndex++
-      }
-
-      walk(i + 1, j)
-      walk(i, j + 1)
+    // if so, check top, bottom, left, right
+      walk(x - 1, y)
+      walk(x + 1, y)
+      walk(x, y - 1)
+      walk(x, y + 1)
     }
   }
 
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
+      if (input[i][j] === 1) {
+        islands++
+      }
+
       walk(i, j)
     }
   }
 
-  return islandsIndex
+  return islands
 }
 
 module.exports = solution

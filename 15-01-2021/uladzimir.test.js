@@ -50,3 +50,13 @@ test('with last 1', () => {
 
   expect(solution(map)).toBe(12)
 })
+
+test('failed 1', () => {
+  let map = [
+    [1,1,1],
+    [0,1,0],
+    [1,1,1]
+  ]
+
+  expect(solution(map)).toBe(1)
+})
