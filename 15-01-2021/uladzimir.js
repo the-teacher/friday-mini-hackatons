@@ -17,20 +17,23 @@ const solution = (input) => {
   const n = input[0].length;
   let islands = 0;
 
-  const walk = (x, y) => {
-    // check if x, y within field
+  const burn = (x, y) => {
+    const isOutsideField = x >= m || x < 0 || y >= n || y < 0;
 
-    if (!(x < m && x >= 0 && y < n && y >= 0)) return;
+    if (isOutsideField) return;
 
     if (input[x][y] === 1) {
-      // replace 1 with 0
+      // burn
       input[x][y] = 0;
 
-      // if so, check top, bottom, left, rightfpr
-      walk(x - 1, y);
-      walk(x + 1, y);
-      walk(x, y - 1);
-      walk(x, y + 1);
+      const top = [0, -1];
+      const bottom = [0, 1];
+      const left = [-1, 0];
+      const right = [1, 0];
+
+      for (let [dx, dy] of [top, right, bottom, left]) {
+        burn(x + dx, y + dy);
+      }
     }
   };
 
@@ -40,7 +43,7 @@ const solution = (input) => {
         islands++;
       }
 
-      walk(i, j);
+      burn(i, j);
     }
   }
 
